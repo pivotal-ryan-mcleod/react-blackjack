@@ -1,0 +1,36 @@
+.card-deck {
+  display: block;
+}
+
+.card-hand {
+  display: flex;
+}
+
+.card {
+  border-radius: 3px;
+  border: thin solid black;
+  width: 35px;
+  height: 40px;
+  display: inline-block;
+  margin: 5px;
+}
+
+.card-back {
+  background-color: darkblue;
+}
+
+.card-label {
+  text-align: center;
+  width: inherit;
+  height: inherit;
+  display: inline-block;
+  line-height: 40px;
+}
+
+.card .red {
+  color: red;
+}
+
+.card .black {
+  color: black;
+}
