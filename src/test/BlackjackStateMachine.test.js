@@ -122,7 +122,7 @@ describe('when the player hits', () => {
             dealerAction: false
         };
 
-        const nextState = subject.reducers(previousState, {type: 'PLAYER_HIT'});
+        const nextState = subject.reducer(previousState, {type: 'PLAYER_HIT'});
 
         expect(nextState).toEqual({
             deck: new Deck([]),
@@ -163,7 +163,7 @@ describe('when the player hits', () => {
             dealerAction: false
         };
 
-        const nextState = subject.reducers(previousState, {type: 'PLAYER_HIT'});
+        const nextState = subject.reducer(previousState, {type: 'PLAYER_HIT'});
 
         expect(nextState).toEqual({
             deck: new Deck([]),
@@ -205,7 +205,7 @@ describe('when the player stays', () => {
             dealerAction: false
         };
 
-        const nextState = subject.reducers(previousState, {type: 'PLAYER_STAY'});
+        const nextState = subject.reducer(previousState, {type: 'PLAYER_STAY'});
 
         expect(nextState).toEqual({
             deck: new Deck([]),
@@ -243,7 +243,7 @@ describe('when the dealer hits', () => {
             dealerAction: false
         };
 
-        const nextState = subject.reducers(previousState, {type: 'DEALER_HIT'});
+        const nextState = subject.reducer(previousState, {type: 'DEALER_HIT'});
 
         expect(nextState).toEqual({
             deck: new Deck([]),
@@ -280,7 +280,7 @@ describe('when the dealer hits', () => {
             dealerAction: false
         };
 
-        const nextState = subject.reducers(previousState, {type: 'DEALER_HIT'});
+        const nextState = subject.reducer(previousState, {type: 'DEALER_HIT'});
 
         expect(nextState).toEqual({
             deck: new Deck([]),
@@ -329,7 +329,7 @@ describe('when the dealer stays', () => {
             ]
         };
 
-        const nextState = subject.reducers(previousState, {type: 'DEALER_STAY'});
+        const nextState = subject.reducer(previousState, {type: 'DEALER_STAY'});
 
         expect(nextState.dealerAction).toBe(true);
         expect(nextState.winner).toEqual('PLAYER');
@@ -344,14 +344,14 @@ describe('when the dealer stays', () => {
             ]
         };
 
-        const nextState = subject.reducers(previousState, {type: 'DEALER_STAY'});
+        const nextState = subject.reducer(previousState, {type: 'DEALER_STAY'});
 
         expect(nextState.dealerAction).toBe(true);
         expect(nextState.winner).toEqual('DEALER');
     });
 
     it('declares a draw if the dealer and player score are the same', () => {
-        const nextState = subject.reducers(previousState, {type: 'DEALER_STAY'});
+        const nextState = subject.reducer(previousState, {type: 'DEALER_STAY'});
 
         expect(nextState.dealerAction).toBe(true);
         expect(nextState.winner).toEqual('DRAW');

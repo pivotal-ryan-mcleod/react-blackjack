@@ -1,11 +1,11 @@
 // @flow
 
 import {Card} from "./Card";
-import type {Shuffler} from "./Blackjack";
 import {Deck} from "./Deck";
 import {calculateHandTotal} from "./HandCalculation";
 import {Observable} from "rxjs";
 import * as Dealer from './Dealer'
+import type {GameStateMachine} from "./ReduxAppPresenter";
 
 export interface Person {
     hand: Array<Card>;
@@ -40,7 +40,11 @@ export interface GameAction {
     type: ActionType;
 }
 
-export class BlackjackStateMachine {
+export interface Shuffler {
+    shuffle(deck: Deck): Deck;
+}
+
+export class BlackjackStateMachine implements GameStateMachine {
     shuffler: Shuffler;
 
     constructor(shuffler: Shuffler) {
@@ -51,7 +55,7 @@ export class BlackjackStateMachine {
         return initialState(this.shuffler);
     }
 
-    reducers(state: GameState, action: GameAction): GameState {
+    reducer(state: GameState, action: GameAction): GameState {
         switch (action.type) {
             case actionTypes.PLAYER_HIT:
                 return playerHit(state);

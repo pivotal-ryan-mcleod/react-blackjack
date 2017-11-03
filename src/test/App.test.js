@@ -14,7 +14,7 @@ import {ReplaySubject} from "rxjs";
 import type {AppPresenter} from "../App";
 import type {View} from "../App";
 
-let wrapper;
+let subject;
 let defaultState: ViewGameState;
 let scheduler: VirtualTimeScheduler;
 let appPresenterSpy: AppPresenterSpy;
@@ -42,58 +42,58 @@ beforeEach(() => {
     scheduler = new VirtualTimeScheduler();
 
     appPresenterSpy = new AppPresenterSpy();
-    wrapper = mount(<App appPresenter={appPresenterSpy}/>);
-    wrapper.setState(defaultState);
+    subject = mount(<App appPresenter={appPresenterSpy}/>);
+    subject.setState(defaultState);
 });
 
 it('shows the player total', () => {
-    expect(wrapper.text()).toContain("You: PLAYER_TOTAL");
+    expect(subject.text()).toContain("You: PLAYER_TOTAL");
 });
 
 it('shows the dealer total', () => {
-    expect(wrapper.text()).toContain("Dealer: DEALER_TOTAL");
+    expect(subject.text()).toContain("Dealer: DEALER_TOTAL");
 });
 
 it('shows the face up cards', () => {
-    expect(wrapper.text()).toContain("A♦");
-    expect(wrapper.text()).toContain("2♦");
+    expect(subject.text()).toContain("A♦");
+    expect(subject.text()).toContain("2♦");
 });
 
 it('shows only card backs for the face down cards', () => {
-    expect(wrapper.text()).not.toContain("3♦");
-    expect(wrapper.text()).not.toContain("4♦");
-    expect(wrapper.find('.card-back')).toHaveLength(2);
+    expect(subject.text()).not.toContain("3♦");
+    expect(subject.text()).not.toContain("4♦");
+    expect(subject.find('.card-back')).toHaveLength(2);
 });
 
 it('shows when the player wins', () => {
-    wrapper.setState({
+    subject.setState({
         ...defaultState,
         winner: winnerValues.PLAYER
     });
 
-    expect(wrapper.text()).toContain("You: PLAYER_TOTAL - You win!");
+    expect(subject.text()).toContain("You: PLAYER_TOTAL - You win!");
 });
 
 it('shows when the dealer wins', () => {
-    wrapper.setState({
+    subject.setState({
         ...defaultState,
         winner: winnerValues.DEALER
     });
 
-    expect(wrapper.text()).toContain("You: PLAYER_TOTAL - You lose!");
+    expect(subject.text()).toContain("You: PLAYER_TOTAL - You lose!");
 });
 
 it('shows when the game is a draw', () => {
-    wrapper.setState({
+    subject.setState({
         ...defaultState,
         winner: winnerValues.DRAW
     });
 
-    expect(wrapper.text()).toContain("You: PLAYER_TOTAL - Draw");
+    expect(subject.text()).toContain("You: PLAYER_TOTAL - Draw");
 });
 
 it('shows when the player busts', () => {
-    wrapper.setState({
+    subject.setState({
         ...defaultState,
         winner: winnerValues.DEALER,
         player: {
@@ -102,11 +102,11 @@ it('shows when the player busts', () => {
         }
     });
 
-    expect(wrapper.text()).toContain("You: PLAYER_TOTAL - Bust!");
+    expect(subject.text()).toContain("You: PLAYER_TOTAL - Bust!");
 });
 
 it('shows when the dealer busts', () => {
-    wrapper.setState({
+    subject.setState({
         ...defaultState,
         winner: winnerValues.PLAYER,
         dealer: {
@@ -115,29 +115,29 @@ it('shows when the dealer busts', () => {
         }
     });
 
-    expect(wrapper.text()).toContain("Dealer: DEALER_TOTAL - Bust!");
+    expect(subject.text()).toContain("Dealer: DEALER_TOTAL - Bust!");
 });
 
 it('sends an action when hit is clicked', () => {
-    wrapper.find('button[children="Hit"]').simulate('click');
+    subject.find('button[children="Hit"]').simulate('click');
 
     expect(appPresenterSpy.receivedActions).toEqual([{type: 'PLAYER_HIT'}]);
 });
 
 it('sends an action when stay is clicked', () => {
-    wrapper.find('button[children="Stay"]').simulate('click');
+    subject.find('button[children="Stay"]').simulate('click');
 
     expect(appPresenterSpy.receivedActions).toEqual([{type: 'PLAYER_STAY'}]);
 });
 
 it('disables the hit/stay buttons if the player is done their turn', () => {
-    wrapper.setState({
+    subject.setState({
         ...defaultState,
         playerDone: true
     });
 
-    wrapper.find('button[children="Hit"]').simulate('click');
-    wrapper.find('button[children="Stay"]').simulate('click');
+    subject.find('button[children="Hit"]').simulate('click');
+    subject.find('button[children="Stay"]').simulate('click');
 
     expect(appPresenterSpy.receivedActions).toEqual([]);
 });

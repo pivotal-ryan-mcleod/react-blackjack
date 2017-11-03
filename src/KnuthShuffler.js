@@ -2,7 +2,7 @@
 
 import {Deck} from "./Deck";
 import * as _ from "lodash";
-import type {Shuffler} from "./Blackjack";
+import type {Shuffler} from "./BlackjackStateMachine";
 
 export class KnuthShuffler implements Shuffler {
     shuffle(deck: Deck): Deck {
