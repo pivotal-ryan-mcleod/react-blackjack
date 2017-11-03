@@ -3,10 +3,6 @@ import {actionTypes, BlackjackStateMachine} from "../BlackjackStateMachine";
 import {createStore} from "redux";
 import type {View} from "../App";
 import type {ViewGameState} from "../StateFormatter";
-import type {GameState} from "../BlackjackStateMachine";
-import type {GameStateMachine} from "../ReduxAppPresenter";
-import * as Rx from "rxjs";
-import {epics} from "../Epics";
 import {stateFormatter} from "../StateFormatter";
 import {TestShuffler} from "./doubles/TestShuffler";
 import {ALL_CARDS_SORTED} from "./fixtures/DeckFixtures";
@@ -17,7 +13,7 @@ const stateMachine = new BlackjackStateMachine(new TestShuffler(ALL_CARDS_SORTED
 
 beforeEach(() => {
     view = new ViewSpy();
-    subject = new ReduxAppPresenter(stateMachine, createStore, epics, stateFormatter);
+    subject = new ReduxAppPresenter(stateMachine, createStore, stateFormatter);
 });
 
 it('sets the initial state on the view', () => {
@@ -40,14 +36,6 @@ it('dispatches actions to the store and informs the view of state changes', () =
         stateFormatter(expectedStateChange)
     ]);
     expect(subject.store.getState()).toEqual(expectedStateChange);
-});
-
-it('generates new actions as requested by epics', () => {
-    let action = {type: actionTypes.PLAYER_STAY};
-    subject.attach(view);
-    subject.sendAction(action);
-
-    expect(view.stateChanges.length).toBeGreaterThan(2);
 });
 
 class ViewSpy implements View {

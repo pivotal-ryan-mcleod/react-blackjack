@@ -1,13 +1,10 @@
+
 import * as _ from "lodash";
 
 export const toEqualInAnyOrderMatcher = {
     toEqualInAnyOrder<T>(actual: Array<T>, expected: Array<T>) {
         const pass = (actual.length === expected.length) &&
-            _.every(actual, (actualItem) => {
-                return _.some(expected, (expectedItem) => {
-                    return _.isEqual(actualItem, expectedItem);
-                });
-            });
+            actual.every(actualItem => expected.some(expectedItem => _.isEqual(actualItem, expectedItem)));
         if (pass) {
             return {
                 message: () => (

@@ -1,6 +1,5 @@
 import {Card, suits} from "../Card";
 import {calculateHandTotal} from "../HandCalculation";
-import * as _ from "lodash";
 
 it('counts numbers by their numeric value', () => {
     expect(calculateHandTotal(cards(['2', '5', '7']))).toEqual(14);
@@ -26,7 +25,5 @@ it('counts J/Q/K as 10', () => {
 });
 
 function cards(values) {
-    return _.map(values, (v) => {
-        return new Card(suits.SPADES, v)
-    });
+    return values.map(value => new Card(suits.SPADES, value));
 }

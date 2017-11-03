@@ -35,9 +35,9 @@ describe('when the player stays', () => {
             },
             deck: new Deck([new Card(suits.DIAMONDS, 'A'), new Card(suits.DIAMONDS, 'A', new Card(suits.CLUBS, 'K'))])
         };
-        let returnedActions: Observable<GameAction> = dealerStrategy(state, {type: 'PLAYER_STAY'});
+        let returnedActions: Observable<GameAction> = dealerStrategy(Observable.of({type: 'PLAYER_STAY'}), store(state));
 
-        let expectedActionStream = '(HHS|)'; // Events are all emitted instantaneously
+        let expectedActionStream = '(HHS|)';
         testScheduler.expectObservable(returnedActions).toBe(expectedActionStream, actionSymbols);
     });
 
@@ -48,7 +48,7 @@ describe('when the player stays', () => {
             },
             deck: new Deck([new Card(suits.DIAMONDS, 'A')])
         };
-        let returnedActions: Observable<GameAction> = dealerStrategy(state, {type: 'PLAYER_STAY'});
+        let returnedActions: Observable<GameAction> = dealerStrategy(Observable.of({type: 'PLAYER_STAY'}), store(state));
 
         let expectedActionStream = '(S|)';
         testScheduler.expectObservable(returnedActions).toBe(expectedActionStream, actionSymbols);
@@ -61,9 +61,15 @@ describe('when the player stays', () => {
             },
             deck: new Deck([new Card(suits.DIAMONDS, 'J')])
         };
-        let returnedActions: Observable<GameAction> = dealerStrategy(state, {type: 'PLAYER_STAY'});
+        let returnedActions: Observable<GameAction> = dealerStrategy(Observable.of({type: 'PLAYER_STAY'}), store(state));
 
         let expectedActionStream = '(H|)';
         testScheduler.expectObservable(returnedActions).toBe(expectedActionStream, actionSymbols);
     });
 });
+
+function store(state) {
+    return {
+        getState: () => state
+    };
+}

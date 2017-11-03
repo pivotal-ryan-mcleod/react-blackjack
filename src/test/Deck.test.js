@@ -1,7 +1,6 @@
 import {Deck} from "../Deck";
 import {Card, suits} from "../Card";
 import deepFreeze from 'deep-freeze'
-import * as _ from "lodash";
 import {ALL_CARDS_SORTED} from "./fixtures/DeckFixtures";
 
 it('contains all legal playing cards by default', () => {

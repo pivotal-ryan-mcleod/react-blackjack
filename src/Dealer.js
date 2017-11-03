@@ -13,27 +13,28 @@ export interface DealerGameState {
     deck: Deck;
 }
 
-export function dealerStrategy(state: DealerGameState, action: ?GameAction): Rx.Observable<GameAction> {
-    let actions = [];
-    if (action != null && action.type === actionTypes.PLAYER_STAY) {
-        const deck = state.deck;
-        const hand = state.dealer.hand;
-        const cardsToDraw = deck.cards
-            .reduce((cardsToDraw: Array<Card>, card: Card) => {
-                if (calculateHandTotal(hand.concat(cardsToDraw)) < 17) {
-                    return cardsToDraw.concat(card);
-                } else {
-                    return cardsToDraw;
-                }
-            }, []);
-        const bust = calculateHandTotal(hand.concat(cardsToDraw)) > 21;
-        actions = cardsToDraw.map(() => {
-            return {type: actionTypes.DEALER_HIT}
+export function dealerStrategy(actions: Rx.Observable<GameAction>, store: any): Rx.Observable<GameAction> {
+    return actions
+        .filter(action => action.type === actionTypes.PLAYER_STAY)
+        .flatMap(() => {
+            const state = store.getState();
+            const deck = state.deck;
+            const hand = state.dealer.hand;
+            const cardsToDraw = deck.cards
+                .reduce((cardsToDraw: Array<Card>, card: Card) => {
+                    if (calculateHandTotal(hand.concat(cardsToDraw)) < 17) {
+                        return cardsToDraw.concat(card);
+                    } else {
+                        return cardsToDraw;
+                    }
+                }, []);
+            let dealerActions = cardsToDraw
+                .map(() => {
+                    return {type: actionTypes.DEALER_HIT}
+                });
+            if (calculateHandTotal(hand.concat(cardsToDraw)) <= 21) {
+                dealerActions.push({type: actionTypes.DEALER_STAY});
+            }
+            return dealerActions;
         });
-        if (!bust) {
-            actions.push({type: actionTypes.DEALER_STAY});
-        }
-    }
-
-    return Rx.Observable.from(actions);
 }

@@ -1,10 +1,9 @@
 // @flow
 
-import * as _ from "lodash";
 import {Card} from "./Card";
 
 export function calculateHandTotal(cards: Array<Card>): number {
-    let pessimisticCalculation = _.reduce(cards, (total, card) => {
+    let pessimisticCalculation = cards.reduce((total, card) => {
         switch (card.value) {
             case 'A':
                 return total + 11;
@@ -17,7 +16,7 @@ export function calculateHandTotal(cards: Array<Card>): number {
         }
     }, 0);
 
-    return _.chain(cards)
+    return cards
         .filter(c => c.value === 'A')
         .reduce((total) => {
             if (total > 21) {
@@ -25,6 +24,5 @@ export function calculateHandTotal(cards: Array<Card>): number {
             } else {
                 return total;
             }
-        }, pessimisticCalculation)
-        .value();
+        }, pessimisticCalculation);
 }

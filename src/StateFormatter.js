@@ -1,6 +1,7 @@
 import {Card} from "./Card";
 import {calculateHandTotal} from "./HandCalculation";
 import type {GameState, GameWinner, Person} from "./BlackjackStateMachine";
+import type {StateFormatter} from "./ReduxAppPresenter";
 
 export interface ViewPerson {
     total: string;
@@ -16,7 +17,7 @@ export interface ViewGameState {
     playerDone: boolean;
 }
 
-export const stateFormatter = (state: GameState): ViewGameState => {
+export const stateFormatter: StateFormatter = state => {
     return {
         winner: state.winner,
         player: new ViewPersonImpl(state.player),

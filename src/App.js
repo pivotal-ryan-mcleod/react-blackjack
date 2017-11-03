@@ -4,7 +4,7 @@ import './App.css';
 import type {GameAction} from "./BlackjackStateMachine";
 import {actionTypes, winnerValues} from "./BlackjackStateMachine";
 import type {ViewGameState} from "./StateFormatter";
-import {Card} from "./Card";
+import {HandComponent} from "./HandComponent";
 
 export interface AppDependencies {
     appPresenter: AppPresenter;
@@ -74,24 +74,6 @@ function dealerText(state: ViewGameState): string {
         dealerText += " - Bust!"
     }
     return dealerText;
-}
-
-interface HandProps {
-    hand: Array<Card>;
-}
-
-class HandComponent extends Component<HandProps> {
-    render() {
-        return <div className="card-hand">
-            {this.props.hand.map(card => {
-                if (card.faceUp) {
-                    return <div className='card'><span className='card-label'>{card.toString()}</span></div>
-                } else {
-                    return <div className='card card-back'/>
-                }
-            })}
-        </div>
-    }
 }
 
 export default App;

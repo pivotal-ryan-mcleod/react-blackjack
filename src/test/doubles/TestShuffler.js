@@ -1,8 +1,7 @@
 // @flow
-import type {Shuffler} from "../../Blackjack";
 import {Deck} from "../../Deck";
-import * as _ from "lodash";
 import {Card} from "../../Card";
+import type {Shuffler} from "../../BlackjackStateMachine";
 
 export class TestShuffler implements Shuffler {
     cards : Array<Card>;
